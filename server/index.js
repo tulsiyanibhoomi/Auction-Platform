@@ -36,7 +36,7 @@ const app = express();
 const server = createServer(app);
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const io = new Server(server, {
   cors: {
@@ -59,10 +59,12 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", connections: io.engine.clientsCount });
 });
 
-app.use(express.static(path.join(__dirname, "dist")));
+const rootDir = path.join(__dirname, "..");
+
+app.use(express.static(path.join(rootDir, "dist")));
 
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+  res.sendFile(path.join(rootDir, "dist", "index.html"));
 });
 
 // Track connected clients
