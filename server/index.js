@@ -1,3 +1,6 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -32,6 +35,9 @@ import {
 const app = express();
 const server = createServer(app);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -51,6 +57,12 @@ app.get("/health", (req, res) => {
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", connections: io.engine.clientsCount });
+});
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Track connected clients

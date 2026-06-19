@@ -11,6 +11,8 @@ const socket = io(URL, {
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
   timeout: 10000,
+  autoConnect: true,
+  forceNew: false,
 });
 
 socket.on("connect", () => {
