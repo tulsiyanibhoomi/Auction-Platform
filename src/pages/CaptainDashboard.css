@@ -1,0 +1,334 @@
+.captain {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.captain__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border-bottom: 3px solid var(--team-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.captain__back {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  padding: 8px;
+}
+
+.captain__team-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.captain__team-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.captain__team-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.captain__team-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.captain__purse {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.captain__purse strong {
+  color: var(--accent-gold-light);
+}
+
+/* Main */
+.captain__main {
+  flex: 1;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Waiting state */
+.captain__waiting {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl);
+}
+
+.captain__waiting-icon {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.captain__waiting h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+}
+
+.captain__waiting p {
+  color: var(--text-secondary);
+}
+
+.captain__waiting-pulse {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-gold);
+  animation: pulse 2s ease infinite;
+  opacity: 0.3;
+}
+
+/* Auction View */
+.captain__auction-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  animation: fadeIn 0.3s ease;
+}
+
+.captain__player-section {
+  width: 100%;
+}
+
+.captain__player-section .player-card {
+  width: 100%;
+}
+
+.captain__timer-section {
+  display: flex;
+  justify-content: center;
+}
+
+/* Current Bid */
+.captain__current-bid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-md) var(--space-xl);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  border: var(--border-card);
+  width: 100%;
+  text-align: center;
+}
+
+.captain__current-bid--mine {
+  border-color: var(--accent-green);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.captain__bid-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.captain__bid-amount {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-gold-light);
+}
+
+.captain__bid-team {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Bid Section */
+.captain__bid-section {
+  width: 100%;
+}
+
+/* History */
+.captain__history {
+  width: 100%;
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-md);
+  border: var(--border-card);
+}
+
+/* Squad */
+.captain__squad {
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border-top: var(--border-card);
+}
+
+.captain__squad-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.captain__squad-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.captain__squad-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.captain__squad-price {
+  color: var(--accent-gold);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.captain__loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+@media (min-width: 769px) {
+  .captain {
+    max-width: 480px;
+    border-left: var(--border-card);
+    border-right: var(--border-card);
+  }
+}
+
+/* Ended Summary */
+.captain__ended-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0;
+  text-align: center;
+}
+
+.captain__ended-icon {
+  font-size: 5rem;
+  margin-bottom: var(--space-md);
+  animation: float 3s ease-in-out infinite;
+}
+
+.captain__ended-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.captain__stat-box {
+  background: var(--bg-card);
+  border: var(--border-card);
+  padding: var(--space-md);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.captain__stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.captain__stat-value {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.captain__squad-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.captain__squad-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+  border: var(--border-card);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-md);
+}
+
+.captain__squad-card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+  text-align: left;
+}
+
+.captain__squad-card-role {
+  font-size: 0.7rem;
+  margin: 0 var(--space-sm);
+}
+
+.captain__squad-card-price {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.captain__no-players {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--space-xl) 0;
+}

@@ -1,0 +1,152 @@
+.team-card {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.team-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.team-card--highlighted {
+  border-color: var(--team-color);
+  box-shadow: 0 0 25px color-mix(in srgb, var(--team-color) 30%, transparent);
+  animation: bidFlash 0.6s ease;
+}
+
+.team-card--compact {
+  padding: var(--space-md);
+}
+
+.team-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--team-color);
+}
+
+.team-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.team-card--compact .team-card__header {
+  margin-bottom: 0;
+}
+
+.team-card__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.team-card__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.team-card__name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-card__players-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Purse */
+.team-card__purse {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.team-card__purse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-card__purse-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.team-card__purse-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent-gold-light);
+}
+
+.team-card__purse-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.team-card__purse-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width var(--transition-normal);
+}
+
+.team-card__purse-spent {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Squad list */
+.team-card__squad {
+  margin-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.team-card__squad-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.team-card__squad-price {
+  color: var(--accent-gold);
+  font-weight: 600;
+  font-size: 0.75rem;
+}

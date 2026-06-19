@@ -1,0 +1,79 @@
+.bid-history {
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.bid-history--compact {
+  max-height: 200px;
+}
+
+.bid-history--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.bid-history__empty-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.bid-history__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bid-history__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  transition: background var(--transition-fast);
+}
+
+.bid-history__item--latest {
+  background: rgba(245, 158, 11, 0.08);
+  animation: fadeInUp 0.3s ease;
+}
+
+.bid-history__item-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bid-history__item-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+}
+
+.bid-history__item-team {
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bid-history__item-amount {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.bid-history__item-badge {
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  flex-shrink: 0;
+}

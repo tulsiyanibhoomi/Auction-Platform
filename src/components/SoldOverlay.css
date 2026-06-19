@@ -1,0 +1,121 @@
+.sold-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sold-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sold-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.sold-overlay__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-3xl);
+}
+
+.sold-overlay__stamp {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 6rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  border-radius: 16px;
+  border: 6px solid;
+  animation: stampIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.sold-overlay__stamp--sold {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  text-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 60px rgba(16, 185, 129, 0.3), inset 0 0 60px rgba(16, 185, 129, 0.1);
+}
+
+.sold-overlay__stamp--unsold {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+  text-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 60px rgba(239, 68, 68, 0.3), inset 0 0 60px rgba(239, 68, 68, 0.1);
+  animation: stampIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards,
+             shake 0.5s ease 0.5s;
+}
+
+.sold-overlay__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.sold-overlay__player-name {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.sold-overlay__to {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.sold-overlay__team-name {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.sold-overlay__price {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--accent-gold-light);
+  text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+}
+
+.sold-overlay__subtitle {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .sold-overlay__stamp {
+    font-size: 3.5rem;
+    padding: 12px 32px;
+  }
+
+  .sold-overlay__player-name {
+    font-size: 1.5rem;
+  }
+
+  .sold-overlay__price {
+    font-size: 2rem;
+  }
+
+  .sold-overlay__team-name {
+    font-size: 1.3rem;
+  }
+}

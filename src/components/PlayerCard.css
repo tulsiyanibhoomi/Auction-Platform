@@ -1,0 +1,188 @@
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--border-radius-lg);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-gold);
+  opacity: 0.6;
+}
+
+.player-card--animate {
+  animation: fadeInScale 0.5s ease;
+}
+
+/* Sizes */
+.player-card--sm {
+  flex-direction: row;
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-sm);
+}
+
+.player-card--sm .player-card__avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 0.7rem;
+}
+
+.player-card--sm .player-card__name {
+  font-size: 0.85rem;
+}
+
+.player-card--sm .player-card__price { display: none; }
+
+.player-card--md .player-card__avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 1.5rem;
+}
+
+.player-card--lg {
+  padding: var(--space-xl) var(--space-2xl);
+}
+
+.player-card--lg .player-card__avatar {
+  width: 120px;
+  height: 120px;
+  font-size: 2.5rem;
+}
+
+.player-card--lg .player-card__name {
+  font-size: 1.8rem;
+}
+
+.player-card--lg .player-card__price-value {
+  font-size: 1.3rem;
+}
+
+.player-card--xl {
+  padding: var(--space-2xl) var(--space-3xl);
+}
+
+.player-card--xl .player-card__avatar {
+  width: 160px;
+  height: 160px;
+  font-size: 3.5rem;
+}
+
+.player-card--xl .player-card__name {
+  font-size: 2.5rem;
+}
+
+.player-card--xl .player-card__price-value {
+  font-size: 1.8rem;
+}
+
+.player-card--xl .player-card__role {
+  font-size: 1rem;
+  padding: 6px 18px;
+}
+
+/* Avatar */
+.player-card__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.player-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-card__initials {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+/* Info */
+.player-card__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-card--sm .player-card__info {
+  align-items: flex-start;
+}
+
+.player-card__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.player-card__role {
+  font-size: 0.75rem;
+}
+
+.player-card__price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.player-card__price-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.player-card__price-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent-gold-light);
+}
+
+/* Sold / Unsold badges */
+.player-card__sold-badge,
+.player-card__unsold-badge {
+  position: absolute;
+  top: 12px;
+  right: -28px;
+  padding: 4px 36px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transform: rotate(45deg);
+}
+
+.player-card__sold-badge {
+  background: var(--accent-green);
+  color: white;
+}
+
+.player-card__unsold-badge {
+  background: var(--accent-red);
+  color: white;
+}

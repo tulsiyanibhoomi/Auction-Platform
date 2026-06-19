@@ -1,0 +1,127 @@
+.scoreboard {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-lg);
+}
+
+.scoreboard--compact {
+  padding: var(--space-md);
+}
+
+.scoreboard__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  color: var(--text-secondary);
+}
+
+.scoreboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scoreboard__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 12px;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  transition: background var(--transition-fast);
+}
+
+.scoreboard__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scoreboard__rank {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.scoreboard__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.6rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.scoreboard__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scoreboard__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scoreboard__bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.scoreboard__bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width var(--transition-normal);
+}
+
+.scoreboard__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.scoreboard__purse {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--accent-gold-light);
+  white-space: nowrap;
+}
+
+.scoreboard__count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.scoreboard--compact .scoreboard__title {
+  font-size: 0.85rem;
+  margin-bottom: var(--space-sm);
+}
+
+.scoreboard--compact .scoreboard__item {
+  padding: 6px 8px;
+}

@@ -1,0 +1,181 @@
+.bid-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.bid-status {
+  padding: 10px 20px;
+  border-radius: var(--border-radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  animation: fadeInUp 0.3s ease;
+}
+
+.bid-status--leading {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green-light);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.bid-status--outbid {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red-light);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: shake 0.5s ease;
+}
+
+.bid-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px 32px;
+  border-radius: var(--border-radius-lg);
+  background: var(--gradient-gold);
+  color: #000;
+  font-family: var(--font-heading);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-glow-gold);
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.bid-button:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 0 50px rgba(245, 158, 11, 0.5);
+}
+
+.bid-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.bid-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.bid-button--leading {
+  background: var(--gradient-green);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.bid-button--ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: inherit;
+  animation: bidFlash 0.6s ease forwards;
+}
+
+.bid-button__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.bid-button__amount {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.bid-purse-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.bid-purse-amount {
+  font-weight: 700;
+  color: var(--text-gold);
+}
+
+@media (max-width: 768px) {
+  .bid-button {
+    padding: 20px 24px;
+  }
+
+  .bid-button__amount {
+    font-size: 1.6rem;
+  }
+}
+
+.bid-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 400px;
+}
+
+.bid-quick-actions {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: space-between;
+}
+
+.btn-quick {
+  flex: 1;
+  background: var(--bg-surface-light);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 0;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-quick:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.btn-quick--clear {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--accent-red-light);
+}
+
+.btn-quick--clear:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.bid-custom-input {
+  width: 100%;
+  background: var(--bg-surface-light);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.bid-custom-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}

@@ -1,0 +1,22 @@
+{
+  "teams": [],
+  "players": [],
+  "auction": {
+    "status": "idle",
+    "currentPlayer": null,
+    "currentBid": 0,
+    "currentBidder": null,
+    "bidHistory": [],
+    "timer": 15,
+    "increment": 500000,
+    "soldPlayers": [],
+    "unsoldPlayers": [],
+    "round": 1
+  },
+  "settings": {
+    "defaultPurse": 10000000,
+    "timerDuration": 15,
+    "defaultIncrement": 500000,
+    "defaultBasePrice": 2000000
+  }
+}
