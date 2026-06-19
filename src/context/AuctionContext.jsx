@@ -1,5 +1,12 @@
-import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
-import socket from '../socket';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
+import socket from "../socket";
 
 const AuctionContext = createContext(null);
 
@@ -7,12 +14,12 @@ export function AuctionProvider({ children }) {
   const [teams, setTeams] = useState([]);
   const [players, setPlayers] = useState([]);
   const [auction, setAuction] = useState({
-    status: 'idle',
+    status: "idle",
     currentPlayer: null,
     currentBid: 0,
     currentBidder: null,
     bidHistory: [],
-    timer: 15,
+    timer: 20,
     increment: 500000,
     soldPlayers: [],
     unsoldPlayers: [],
@@ -20,7 +27,7 @@ export function AuctionProvider({ children }) {
   });
   const [settings, setSettings] = useState({
     defaultPurse: 10000000,
-    timerDuration: 15,
+    timerDuration: 20,
     defaultIncrement: 500000,
   });
   const [connected, setConnected] = useState(socket.connected);
@@ -47,7 +54,8 @@ export function AuctionProvider({ children }) {
     // Granular updates
     const onTeamsUpdate = ({ teams }) => setTeams(teams);
     const onPlayersUpdate = ({ players }) => setPlayers(players);
-    const onAuctionUpdate = ({ auction }) => setAuction((prev) => ({ ...prev, ...auction }));
+    const onAuctionUpdate = ({ auction }) =>
+      setAuction((prev) => ({ ...prev, ...auction }));
     const onSettingsUpdate = ({ settings }) => setSettings(settings);
 
     // Timer tick - lightweight update
@@ -60,46 +68,46 @@ export function AuctionProvider({ children }) {
       setAuction((prev) => ({ ...prev, ...auctionState }));
       setSoldInfo(null);
       setUnsoldInfo(null);
-      setLastEvent({ type: 'playerUp', player });
+      setLastEvent({ type: "playerUp", player });
     };
 
     const onBidPlaced = ({ bidEntry, auction: auctionState }) => {
       setAuction((prev) => ({ ...prev, ...auctionState }));
-      setLastEvent({ type: 'bid', bidEntry, timestamp: Date.now() });
+      setLastEvent({ type: "bid", bidEntry, timestamp: Date.now() });
     };
 
     const onSold = ({ player, team, price }) => {
       setSoldInfo({ player, team, price });
-      setLastEvent({ type: 'sold', player, team, price });
+      setLastEvent({ type: "sold", player, team, price });
     };
 
     const onUnsold = ({ player }) => {
       setUnsoldInfo({ player });
-      setLastEvent({ type: 'unsold', player });
+      setLastEvent({ type: "unsold", player });
     };
 
     const onPaused = () => {
-      setAuction((prev) => ({ ...prev, status: 'paused' }));
+      setAuction((prev) => ({ ...prev, status: "paused" }));
     };
 
     const onResumed = ({ timer }) => {
-      setAuction((prev) => ({ ...prev, status: 'active', timer }));
+      setAuction((prev) => ({ ...prev, status: "active", timer }));
     };
 
     const onEnded = () => {
-      setAuction((prev) => ({ ...prev, status: 'ended' }));
+      setAuction((prev) => ({ ...prev, status: "ended" }));
     };
 
     const onReset = () => {
       setTeams([]);
       setPlayers([]);
       setAuction({
-        status: 'idle',
+        status: "idle",
         currentPlayer: null,
         currentBid: 0,
         currentBidder: null,
         bidHistory: [],
-        timer: 15,
+        timer: 20,
         increment: 500000,
         soldPlayers: [],
         unsoldPlayers: [],
@@ -107,7 +115,7 @@ export function AuctionProvider({ children }) {
       });
       setSoldInfo(null);
       setUnsoldInfo(null);
-      setLastEvent({ type: 'reset' });
+      setLastEvent({ type: "reset" });
     };
 
     const onError = ({ message }) => {
@@ -115,42 +123,42 @@ export function AuctionProvider({ children }) {
       setTimeout(() => setError(null), 3000);
     };
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('state:init', onStateInit);
-    socket.on('teams:update', onTeamsUpdate);
-    socket.on('players:update', onPlayersUpdate);
-    socket.on('auction:update', onAuctionUpdate);
-    socket.on('settings:update', onSettingsUpdate);
-    socket.on('auction:timerTick', onTimerTick);
-    socket.on('auction:playerUp', onPlayerUp);
-    socket.on('auction:bidPlaced', onBidPlaced);
-    socket.on('auction:sold', onSold);
-    socket.on('auction:unsold', onUnsold);
-    socket.on('auction:paused', onPaused);
-    socket.on('auction:resumed', onResumed);
-    socket.on('auction:ended', onEnded);
-    socket.on('auction:reset', onReset);
-    socket.on('error', onError);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("state:init", onStateInit);
+    socket.on("teams:update", onTeamsUpdate);
+    socket.on("players:update", onPlayersUpdate);
+    socket.on("auction:update", onAuctionUpdate);
+    socket.on("settings:update", onSettingsUpdate);
+    socket.on("auction:timerTick", onTimerTick);
+    socket.on("auction:playerUp", onPlayerUp);
+    socket.on("auction:bidPlaced", onBidPlaced);
+    socket.on("auction:sold", onSold);
+    socket.on("auction:unsold", onUnsold);
+    socket.on("auction:paused", onPaused);
+    socket.on("auction:resumed", onResumed);
+    socket.on("auction:ended", onEnded);
+    socket.on("auction:reset", onReset);
+    socket.on("error", onError);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('state:init', onStateInit);
-      socket.off('teams:update', onTeamsUpdate);
-      socket.off('players:update', onPlayersUpdate);
-      socket.off('auction:update', onAuctionUpdate);
-      socket.off('settings:update', onSettingsUpdate);
-      socket.off('auction:timerTick', onTimerTick);
-      socket.off('auction:playerUp', onPlayerUp);
-      socket.off('auction:bidPlaced', onBidPlaced);
-      socket.off('auction:sold', onSold);
-      socket.off('auction:unsold', onUnsold);
-      socket.off('auction:paused', onPaused);
-      socket.off('auction:resumed', onResumed);
-      socket.off('auction:ended', onEnded);
-      socket.off('auction:reset', onReset);
-      socket.off('error', onError);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("state:init", onStateInit);
+      socket.off("teams:update", onTeamsUpdate);
+      socket.off("players:update", onPlayersUpdate);
+      socket.off("auction:update", onAuctionUpdate);
+      socket.off("settings:update", onSettingsUpdate);
+      socket.off("auction:timerTick", onTimerTick);
+      socket.off("auction:playerUp", onPlayerUp);
+      socket.off("auction:bidPlaced", onBidPlaced);
+      socket.off("auction:sold", onSold);
+      socket.off("auction:unsold", onUnsold);
+      socket.off("auction:paused", onPaused);
+      socket.off("auction:resumed", onResumed);
+      socket.off("auction:ended", onEnded);
+      socket.off("auction:reset", onReset);
+      socket.off("error", onError);
     };
   }, []);
 
@@ -186,15 +194,13 @@ export function AuctionProvider({ children }) {
   };
 
   return (
-    <AuctionContext.Provider value={value}>
-      {children}
-    </AuctionContext.Provider>
+    <AuctionContext.Provider value={value}>{children}</AuctionContext.Provider>
   );
 }
 
 export function useAuction() {
   const ctx = useContext(AuctionContext);
-  if (!ctx) throw new Error('useAuction must be used within AuctionProvider');
+  if (!ctx) throw new Error("useAuction must be used within AuctionProvider");
   return ctx;
 }
 

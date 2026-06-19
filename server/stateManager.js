@@ -14,7 +14,7 @@ const DEFAULT_STATE = {
     currentBid: 0,
     currentBidder: null,
     bidHistory: [],
-    timer: 15,
+    timer: 20,
     increment: 500000,
     soldPlayers: [],
     unsoldPlayers: [],
@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
   },
   settings: {
     defaultPurse: 10000000,
-    timerDuration: 15,
+    timerDuration: 20,
     defaultIncrement: 500000,
     defaultBasePrice: 2000000,
   },

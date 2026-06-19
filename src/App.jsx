@@ -4,13 +4,18 @@ import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import CaptainDashboard from './pages/CaptainDashboard';
 import DisplayScreen from './pages/DisplayScreen';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 
 function App() {
   return (
     <AuctionProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={
+          <ProtectedAdminRoute>
+            <AdminDashboard />
+          </ProtectedAdminRoute>
+        } />
         <Route path="/captain/:teamId" element={<CaptainDashboard />} />
         <Route path="/display" element={<DisplayScreen />} />
       </Routes>

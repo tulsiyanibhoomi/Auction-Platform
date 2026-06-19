@@ -1,3 +1,4 @@
+import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -50,8 +51,22 @@ const io = new Server(server, {
 // Load state on startup
 loadState();
 
+// Parse JSON bodies for API endpoints
+app.use(express.json());
+
 app.get("/health", (req, res) => {
   res.send("OK");
+});
+
+// Admin password verification endpoint
+app.post("/api/verify-admin", (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD || "admin";
+  if (password === adminPassword) {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false, message: "Incorrect password" });
+  }
 });
 
 // Health check

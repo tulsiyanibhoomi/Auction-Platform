@@ -1,17 +1,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuction } from '../context/AuctionContext';
+import AdminPasswordModal from '../components/AdminPasswordModal';
 import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
   const { teams, connected } = useAuction();
   const [selectedTeam, setSelectedTeam] = useState('');
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   const handleJoinCaptain = () => {
     if (selectedTeam) {
       navigate(`/captain/${encodeURIComponent(selectedTeam)}`);
     }
+  };
+
+  const handleAdminAuth = () => {
+    sessionStorage.setItem('adminAuth', Date.now().toString());
+    setShowAdminModal(false);
+    navigate('/admin');
   };
 
   return (
@@ -43,7 +51,7 @@ export default function Home() {
             <p className="home__card-desc">Control the auction, manage teams & players</p>
             <button
               className="btn btn-gold btn-lg home__card-btn"
-              onClick={() => navigate('/admin')}
+              onClick={() => setShowAdminModal(true)}
               id="join-admin-btn"
             >
               Enter Control Room
@@ -101,6 +109,12 @@ export default function Home() {
           <p>Connect all devices to the same Wi-Fi network for real-time sync</p>
         </div>
       </div>
+
+      <AdminPasswordModal
+        isOpen={showAdminModal}
+        onSuccess={handleAdminAuth}
+        onClose={() => setShowAdminModal(false)}
+      />
     </div>
   );
 }
