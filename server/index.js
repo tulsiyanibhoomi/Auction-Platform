@@ -19,6 +19,8 @@ import {
   updateSettings,
   updateAuction,
   resetState,
+  removeAllTeams,
+  removeAllPlayers,
 } from "./stateManager.js";
 import {
   startPlayerAuction,
@@ -260,6 +262,18 @@ io.on("connection", (socket) => {
     io.emit("auction:reset", {});
     io.emit("state:init", getState());
     console.log("[Admin] Full auction reset");
+  });
+
+  socket.on("admin:removeAllTeams", () => {
+    removeAllTeams();
+    io.emit("teams:update", { teams: getTeams() });
+    console.log("[Admin] All teams removed");
+  });
+
+  socket.on("admin:removeAllPlayers", () => {
+    removeAllPlayers();
+    io.emit("players:update", { players: getPlayers() });
+    console.log("[Admin] All players removed");
   });
 
   socket.on("admin:endAuction", () => {

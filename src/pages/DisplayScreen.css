@@ -113,8 +113,10 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--border-radius-xl);
   padding: var(--space-2xl) var(--space-3xl);
-  min-width: 600px;
-  box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
 }
 
 .display__bid-title {
@@ -233,7 +235,7 @@
   display: flex;
   align-items: center;
   z-index: 2;
-  box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .display__ticker-content {
@@ -259,8 +261,12 @@
 }
 
 @keyframes tickerScroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .display__ticker-item {
@@ -290,6 +296,38 @@
   color: var(--text-muted);
   font-style: italic;
   font-size: 1.2rem;
+}
+
+/* Allow grid children to shrink */
+.display__main,
+.display__center,
+.display__sidebar {
+  min-width: 0;
+}
+
+/* Player card container */
+.display__player-wrap {
+  width: 100%;
+  max-width: 800px;
+  min-width: 0;
+}
+
+/* Make player card responsive */
+.display__player-wrap .player-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Latest bids section */
+.display__history-wrap {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.display__history-wrap .bid-history {
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Responsive */
@@ -325,6 +363,11 @@
   }
   .display__waiting-logo {
     font-size: 3rem;
+    letter-spacing: 4px;
+  }
+  .display__waiting-text {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
   }
   .display__bid-amount {
     font-size: 3.5rem;
@@ -342,8 +385,23 @@
     padding: var(--space-md);
     text-align: center;
   }
+  .display__logo {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
   .display__round {
     font-size: 1.2rem;
+  }
+  .display__connection {
+    font-size: 1rem;
+  }
+  .display__waiting-logo {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  .display__waiting-text {
+    font-size: 1rem;
+    letter-spacing: 2px;
   }
   .display__bid-amount {
     font-size: 2.5rem;
@@ -354,4 +412,136 @@
   .display__ticker-label {
     display: none;
   }
+  .display__main {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 440px) {
+  /* Header */
+  .display__logo {
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .display__round {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
+
+  .display__connection {
+    font-size: 0.85rem;
+  }
+
+  /* Waiting Screen */
+  .display__waiting-logo {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .display__waiting-text {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-align: center;
+    white-space: normal;
+    max-width: 90%;
+  }
+
+  /* Bid Area */
+  .display__bid-area {
+    width: 100%;
+    min-width: 0;
+    padding: 1rem;
+  }
+
+  .display__bid-title {
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+
+  .display__bid-amount {
+    font-size: 2rem;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .display__bid-team {
+    font-size: 1.1rem;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  /* Sidebar titles */
+  .display__section-title {
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
+
+  /* Ticker */
+  .display__ticker-item {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  .display__ticker-name,
+  .display__ticker-team,
+  .display__ticker-price {
+    white-space: nowrap;
+  }
+
+  /* Scoreboard */
+  .display__teams-wrap .scoreboard__name {
+    font-size: 0.9rem;
+  }
+
+  .display__teams-wrap .scoreboard__purse {
+    font-size: 0.95rem;
+  }
+
+  .display__center {
+    padding: 0.5rem;
+  }
+
+  .display__player-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .display__history-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .display__history-wrap .bid-history__item {
+    padding: 8px;
+  }
+
+  .display__history-wrap .bid-history__item-team {
+    font-size: 0.9rem;
+  }
+
+  .display__history-wrap .bid-history__item-amount {
+    font-size: 1rem;
+  }
+}
+
+.display__logo,
+.display__waiting-logo,
+.display__waiting-text,
+.display__bid-team {
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
+  max-width: 100%;
+}
+
+.display__bid-team {
+  max-width: 280px;
+  line-height: 1.2;
 }

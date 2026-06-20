@@ -21,6 +21,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('auction');
   const [showEndModal, setShowEndModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showDeleteAllTeamsModal, setShowDeleteAllTeamsModal] = useState(false);
+  const [showDeleteAllPlayersModal, setShowDeleteAllPlayersModal] = useState(false);
 
   const handleAddTeam = (e) => {
     e.preventDefault();
@@ -339,6 +341,16 @@ export default function AdminDashboard() {
               </div>
             )}
 
+            <div className="admin__bulk-actions" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                className="btn btn-red" 
+                onClick={() => setShowDeleteAllTeamsModal(true)}
+                disabled={teams.length === 0}
+              >
+                🗑️ Delete All Teams
+              </button>
+            </div>
+
             <div className="admin__teams-grid">
               {teams.length === 0 ? (
                 <div className="empty-state">
@@ -409,6 +421,16 @@ export default function AdminDashboard() {
                 </form>
               </div>
             )}
+
+            <div className="admin__bulk-actions" style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                className="btn btn-red" 
+                onClick={() => setShowDeleteAllPlayersModal(true)}
+                disabled={players.length === 0}
+              >
+                🗑️ Delete All Players
+              </button>
+            </div>
 
             <div className="admin__players-list">
               {players.length === 0 ? (
@@ -544,7 +566,7 @@ export default function AdminDashboard() {
         <div className="admin__modal-overlay">
           <div className="admin__modal card" style={{ border: '1px solid var(--accent-red)' }}>
             <h3 className="admin__modal-title" style={{ color: 'var(--accent-red)' }}>Reset Auction?</h3>
-            <p className="admin__modal-message">Are you absolutely sure you want to reset the entire auction? All teams, players, and bids will be permanently deleted.</p>
+            <p className="admin__modal-message">Are you absolutely sure you want to reset the entire auction? All team purses, purchased players, and bid history will be reset. Teams and players will NOT be deleted.</p>
             <div className="admin__modal-actions">
               <button className="btn btn-outline" onClick={() => setShowResetModal(false)}>Cancel</button>
               <button 
@@ -555,6 +577,50 @@ export default function AdminDashboard() {
                 }}
               >
                 Yes, Reset All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete All Teams Modal */}
+      {showDeleteAllTeamsModal && (
+        <div className="admin__modal-overlay">
+          <div className="admin__modal card" style={{ border: '1px solid var(--accent-red)' }}>
+            <h3 className="admin__modal-title" style={{ color: 'var(--accent-red)' }}>Delete All Teams?</h3>
+            <p className="admin__modal-message">Are you sure you want to delete all teams? This action cannot be undone.</p>
+            <div className="admin__modal-actions">
+              <button className="btn btn-outline" onClick={() => setShowDeleteAllTeamsModal(false)}>Cancel</button>
+              <button 
+                className="btn btn-red" 
+                onClick={() => {
+                  emit('admin:removeAllTeams');
+                  setShowDeleteAllTeamsModal(false);
+                }}
+              >
+                Yes, Delete All Teams
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete All Players Modal */}
+      {showDeleteAllPlayersModal && (
+        <div className="admin__modal-overlay">
+          <div className="admin__modal card" style={{ border: '1px solid var(--accent-red)' }}>
+            <h3 className="admin__modal-title" style={{ color: 'var(--accent-red)' }}>Delete All Players?</h3>
+            <p className="admin__modal-message">Are you sure you want to delete all players? This action cannot be undone.</p>
+            <div className="admin__modal-actions">
+              <button className="btn btn-outline" onClick={() => setShowDeleteAllPlayersModal(false)}>Cancel</button>
+              <button 
+                className="btn btn-red" 
+                onClick={() => {
+                  emit('admin:removeAllPlayers');
+                  setShowDeleteAllPlayersModal(false);
+                }}
+              >
+                Yes, Delete All Players
               </button>
             </div>
           </div>

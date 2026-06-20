@@ -156,10 +156,40 @@ export function updatePlayer(playerId, updates) {
 }
 
 export function resetState() {
-  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  // Keep existing teams and players, but reset their auction-related stats
+  state.teams = state.teams.map((t) => ({
+    ...t,
+    remaining: t.purse || state.settings.defaultPurse,
+    players: [],
+  }));
+
+  state.players = state.players.map((p) => ({
+    ...p,
+    status: "available",
+    soldTo: null,
+    soldPrice: null,
+  }));
+
+  // Reset auction state to default
+  state.auction = JSON.parse(JSON.stringify(DEFAULT_STATE.auction));
+
   saveStateImmediate();
-  console.log("[StateManager] State reset to defaults");
+  console.log("[StateManager] Auction state reset (teams and players retained)");
   return state;
+}
+
+export function removeAllTeams() {
+  state.teams = [];
+  saveStateImmediate();
+  console.log("[StateManager] All teams removed");
+  return state.teams;
+}
+
+export function removeAllPlayers() {
+  state.players = [];
+  saveStateImmediate();
+  console.log("[StateManager] All players removed");
+  return state.players;
 }
 
 export function getTeamById(teamId) {

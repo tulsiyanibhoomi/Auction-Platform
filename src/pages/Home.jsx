@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuction } from '../context/AuctionContext';
-import AdminPasswordModal from '../components/AdminPasswordModal';
-import './Home.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuction } from "../context/AuctionContext";
+import AdminPasswordModal from "../components/AdminPasswordModal";
+import "./Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
   const { teams, connected } = useAuction();
-  const [selectedTeam, setSelectedTeam] = useState('');
+  const [selectedTeam, setSelectedTeam] = useState("");
   const [showAdminModal, setShowAdminModal] = useState(false);
 
   const handleJoinCaptain = () => {
@@ -17,9 +17,9 @@ export default function Home() {
   };
 
   const handleAdminAuth = () => {
-    sessionStorage.setItem('adminAuth', Date.now().toString());
+    sessionStorage.setItem("adminAuth", Date.now().toString());
     setShowAdminModal(false);
-    navigate('/admin');
+    navigate("/admin");
   };
 
   return (
@@ -38,17 +38,24 @@ export default function Home() {
           </h1>
           <p className="home__subtitle">Real-Time Cricket Auction Platform</p>
           <div className="home__status">
-            <span className={`status-dot ${connected ? 'online' : 'offline'}`} />
-            <span>{connected ? 'Connected to Server' : 'Connecting...'}</span>
+            <span
+              className={`status-dot ${connected ? "online" : "offline"}`}
+            />
+            <span>{connected ? "Connected to Server" : "Connecting..."}</span>
           </div>
         </div>
 
         <div className="home__cards">
           {/* Admin */}
-          <div className="home__card animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <div
+            className="home__card animate-fade-in-up"
+            style={{ animationDelay: "0.1s" }}
+          >
             <div className="home__card-icon">🎛️</div>
             <h2 className="home__card-title">Admin</h2>
-            <p className="home__card-desc">Control the auction, manage teams & players</p>
+            <p className="home__card-desc">
+              Control the auction, manage teams & players
+            </p>
             <button
               className="btn btn-gold btn-lg home__card-btn"
               onClick={() => setShowAdminModal(true)}
@@ -59,10 +66,15 @@ export default function Home() {
           </div>
 
           {/* Captain */}
-          <div className="home__card animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <div
+            className="home__card animate-fade-in-up"
+            style={{ animationDelay: "0.2s" }}
+          >
             <div className="home__card-icon">👨‍✈️</div>
             <h2 className="home__card-title">Captain</h2>
-            <p className="home__card-desc">Join as team captain and place bids</p>
+            <p className="home__card-desc">
+              Join as team captain and place bids
+            </p>
             <div className="home__card-form">
               <select
                 value={selectedTeam}
@@ -86,27 +98,28 @@ export default function Home() {
               </button>
             </div>
             {teams.length === 0 && (
-              <p className="home__card-hint">No teams added yet. Ask admin to add teams first.</p>
+              <p className="home__card-hint">
+                No teams added yet. Ask admin to add teams first.
+              </p>
             )}
           </div>
 
           {/* Display */}
-          <div className="home__card animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div
+            className="home__card animate-fade-in-up"
+            style={{ animationDelay: "0.3s" }}
+          >
             <div className="home__card-icon">📺</div>
             <h2 className="home__card-title">Display</h2>
             <p className="home__card-desc">Stadium screen for TV / projector</p>
             <button
               className="btn btn-outline btn-lg home__card-btn"
-              onClick={() => navigate('/display')}
+              onClick={() => navigate("/display")}
               id="join-display-btn"
             >
               Open Display
             </button>
           </div>
-        </div>
-
-        <div className="home__footer animate-fade-in">
-          <p>Connect all devices to the same Wi-Fi network for real-time sync</p>
         </div>
       </div>
 
