@@ -9,6 +9,8 @@ export default function Home() {
   const { teams, connected } = useAuction();
   const [selectedTeam, setSelectedTeam] = useState("");
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const selectedTeamObj = teams.find((t) => t.id === selectedTeam);
+  const noCaptain = selectedTeamObj && !selectedTeamObj.captain;
 
   const handleJoinCaptain = () => {
     if (selectedTeam) {
@@ -91,7 +93,7 @@ export default function Home() {
               <button
                 className="btn btn-blue btn-lg home__card-btn"
                 onClick={handleJoinCaptain}
-                disabled={!selectedTeam}
+                disabled={!selectedTeam || noCaptain}
                 id="join-captain-btn"
               >
                 Join Auction
@@ -102,14 +104,18 @@ export default function Home() {
                 No teams added yet. Ask admin to add teams first.
               </p>
             )}
-            {selectedTeam && (() => {
-              const t = teams.find(tm => tm.id === selectedTeam);
-              return t && !t.captain ? (
-                <p className="home__card-hint" style={{ color: 'var(--accent-orange)' }}>
-                  ⚠️ No captain assigned to this team. Contact admin.
-                </p>
-              ) : null;
-            })()}
+            {selectedTeam &&
+              (() => {
+                const t = teams.find((tm) => tm.id === selectedTeam);
+                return t && !t.captain ? (
+                  <p
+                    className="home__card-hint"
+                    style={{ color: "var(--accent-orange)" }}
+                  >
+                    ⚠️ No captain assigned to this team. Contact admin.
+                  </p>
+                ) : null;
+              })()}
           </div>
 
           {/* Display */}

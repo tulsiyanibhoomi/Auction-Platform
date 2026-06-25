@@ -1,5 +1,20 @@
 {
-  "teams": [],
+  "teams": [
+    {
+      "id": "team_1782400725321_i444r",
+      "name": "Royal Strikers",
+      "shortName": "RS",
+      "color": "#F59E0B",
+      "purse": 10000000,
+      "remaining": 10000000,
+      "players": [],
+      "captain": {
+        "name": "Bhoomi",
+        "password": "3bc664c1"
+      },
+      "preAddedPlayers": []
+    }
+  ],
   "players": [],
   "auction": {
     "status": "idle",
