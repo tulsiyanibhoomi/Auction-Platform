@@ -133,7 +133,8 @@
   text-align: center;
 }
 
-.admin__bid-amount, .admin__bidder {
+.admin__bid-amount,
+.admin__bidder {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -250,6 +251,255 @@
   font-size: 0.7rem;
 }
 
+/* ===== Team Slots ===== */
+.admin__team-slots {
+  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== Captain Section ===== */
+.admin__captain-section {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: var(--border-card);
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+}
+
+.admin__captain-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.admin__captain-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin__captain-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.admin__captain-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.admin__captain-password-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin__captain-password-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.admin__captain-password-value {
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  background: var(--bg-input);
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: var(--border-card);
+  color: var(--accent-gold-light);
+  letter-spacing: 1px;
+}
+
+.admin__captain-assign-form {
+  display: flex;
+  gap: 6px;
+}
+
+.admin__captain-assign-form input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+/* ===== Pre-Added Players ===== */
+.admin__pre-players-section {
+  padding: 12px 16px;
+  border-top: var(--border-card);
+}
+
+.admin__pre-players-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.admin__pre-players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.admin__pre-player-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 5px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.admin__pre-player-item span:first-child {
+  flex: 1;
+}
+
+.admin__pre-players-empty {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.admin__pre-add-form {
+  margin-top: 4px;
+}
+
+.admin__pre-add-inline {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.admin__pre-add-inline select {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+/* ===== Purse Overview ===== */
+.admin__purse-overview {
+  padding: var(--space-lg);
+}
+
+.admin__purse-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin__purse-header-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr 1.2fr;
+  gap: var(--space-sm);
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  border-bottom: var(--border-card);
+}
+
+.admin__purse-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr 1.2fr;
+  gap: var(--space-sm);
+  padding: 10px 12px;
+  align-items: center;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--border-radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.admin__purse-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin__purse-team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.admin__purse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.admin__purse-empty {
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.admin__purse-adjust-form {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.admin__purse-adjust-input {
+  width: 100px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+/* ===== Team Settings ===== */
+.admin__team-settings {
+  padding: var(--space-lg);
+}
+
+.admin__team-settings-row {
+  display: flex;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.admin__team-setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin__team-setting-item label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin__setting-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.admin__setting-current {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--accent-gold);
+  min-width: 30px;
+}
+
+.admin__setting-input {
+  width: 80px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
 /* ===== Players Tab ===== */
 .admin__players {
   display: flex;
@@ -271,6 +521,8 @@
   background: var(--bg-card);
   border-radius: var(--border-radius-sm);
   border: var(--border-card);
+  min-height: 64px;
+  position: relative;
 }
 
 .admin__player-wrapper > .player-card {
@@ -278,6 +530,9 @@
   background: transparent;
   border: none;
   padding: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 
 .admin__player-meta {
@@ -350,6 +605,12 @@
   .admin__stats-tab {
     grid-template-columns: 1fr;
   }
+
+  .admin__purse-header-row,
+  .admin__purse-row {
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr 1.2fr;
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -380,6 +641,26 @@
     flex-direction: column;
     gap: var(--space-md);
   }
+
+  .admin__purse-header-row,
+  .admin__purse-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 0.7rem;
+  }
+
+  .admin__purse-header-row span:nth-child(2),
+  .admin__purse-row span:nth-child(2) {
+    display: none;
+  }
+
+  .admin__purse-header-row span:nth-child(6),
+  .admin__purse-row span:nth-child(6) {
+    display: none;
+  }
+
+  .admin__team-settings-row {
+    flex-direction: column;
+  }
 }
 
 /* ===== Admin Ended View ===== */
@@ -396,7 +677,11 @@
   gap: var(--space-md);
   padding: var(--space-2xl);
   text-align: center;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(16, 185, 129, 0.06));
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.08),
+    rgba(16, 185, 129, 0.06)
+  );
 }
 
 .admin__ended-icon {
@@ -405,8 +690,13 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .admin__ended-title {

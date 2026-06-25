@@ -5,6 +5,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import CaptainDashboard from './pages/CaptainDashboard';
 import DisplayScreen from './pages/DisplayScreen';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import ProtectedCaptainRoute from './components/ProtectedCaptainRoute';
 
 function App() {
   return (
@@ -16,7 +17,11 @@ function App() {
             <AdminDashboard />
           </ProtectedAdminRoute>
         } />
-        <Route path="/captain/:teamId" element={<CaptainDashboard />} />
+        <Route path="/captain/:teamId" element={
+          <ProtectedCaptainRoute>
+            <CaptainDashboard />
+          </ProtectedCaptainRoute>
+        } />
         <Route path="/display" element={<DisplayScreen />} />
       </Routes>
     </AuctionProvider>

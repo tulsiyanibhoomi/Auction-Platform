@@ -24,11 +24,14 @@ export function AuctionProvider({ children }) {
     soldPlayers: [],
     unsoldPlayers: [],
     round: 1,
+    priorityQueue: [],
   });
   const [settings, setSettings] = useState({
     defaultPurse: 10000000,
     timerDuration: 20,
     defaultIncrement: 500000,
+    maxPlayersPerTeam: 11,
+    rosterLocked: false,
   });
   const [connected, setConnected] = useState(socket.connected);
   const [lastEvent, setLastEvent] = useState(null);
@@ -37,6 +40,13 @@ export function AuctionProvider({ children }) {
   // Track overlay states
   const [soldInfo, setSoldInfo] = useState(null);
   const [unsoldInfo, setUnsoldInfo] = useState(null);
+
+  // Track captain authentication (in-memory only for strict login requirements)
+  const [authedCaptains, setAuthedCaptains] = useState({});
+
+  const setCaptainAuth = useCallback((teamId, isAuthed) => {
+    setAuthedCaptains((prev) => ({ ...prev, [teamId]: isAuthed }));
+  }, []);
 
   useEffect(() => {
     // Connection events
@@ -112,6 +122,7 @@ export function AuctionProvider({ children }) {
         soldPlayers: [],
         unsoldPlayers: [],
         round: 1,
+        priorityQueue: [],
       });
       setSoldInfo(null);
       setUnsoldInfo(null);
@@ -191,6 +202,8 @@ export function AuctionProvider({ children }) {
     emit,
     setSoldInfo,
     setUnsoldInfo,
+    authedCaptains,
+    setCaptainAuth,
   };
 
   return (

@@ -102,6 +102,14 @@ export default function Home() {
                 No teams added yet. Ask admin to add teams first.
               </p>
             )}
+            {selectedTeam && (() => {
+              const t = teams.find(tm => tm.id === selectedTeam);
+              return t && !t.captain ? (
+                <p className="home__card-hint" style={{ color: 'var(--accent-orange)' }}>
+                  ⚠️ No captain assigned to this team. Contact admin.
+                </p>
+              ) : null;
+            })()}
           </div>
 
           {/* Display */}

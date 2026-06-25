@@ -4,7 +4,7 @@ import { formatCurrency } from '../utils/formatters';
 import './BidButton.css';
 
 export default function BidButton({ teamId }) {
-  const { auction, teams, emit, currentBidderTeam } = useAuction();
+  const { auction, teams, settings, emit, currentBidderTeam } = useAuction();
   const [ripple, setRipple] = useState(false);
   const [customBid, setCustomBid] = useState('');
 
@@ -17,7 +17,10 @@ export default function BidButton({ teamId }) {
   
   const nextBidAmount = customBid ? Number(customBid) : defaultNextBid;
   const canAfford = team && nextBidAmount <= team.remaining;
-  const canBid = isActive && !isHighestBidder && canAfford && auction.currentPlayer && (!customBid || Number(customBid) > auction.currentBid);
+  const maxPlayers = settings?.maxPlayersPerTeam || 11;
+  const totalRoster = (team?.captain ? 1 : 0) + (team?.players?.length || 0) + (team?.preAddedPlayers?.length || 0);
+  const isRosterFull = totalRoster >= maxPlayers;
+  const canBid = isActive && !isHighestBidder && canAfford && !isRosterFull && auction.currentPlayer && (!customBid || Number(customBid) > auction.currentBid);
 
   const handleBid = () => {
     if (!canBid) return;
@@ -74,6 +77,8 @@ export default function BidButton({ teamId }) {
             ? 'Waiting for Auction...'
             : isHighestBidder
             ? 'HIGHEST BID'
+            : isRosterFull
+            ? 'ROSTER FULL'
             : !canAfford
             ? 'INSUFFICIENT PURSE'
             : 'PLACE BID'}

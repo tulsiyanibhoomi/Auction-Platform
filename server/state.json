@@ -1,60 +1,25 @@
 {
-  "teams": [
-    {
-      "id": "team_1781958656393_npx3o",
-      "name": "Royal Strikers",
-      "shortName": "RS",
-      "color": "#F59E0B",
-      "purse": 10000000,
-      "remaining": 8000000,
-      "players": [
-        {
-          "id": "player_1781958661725_9zhhz",
-          "name": "VK",
-          "role": "Batsman",
-          "price": 2000000
-        }
-      ]
-    }
-  ],
-  "players": [
-    {
-      "id": "player_1781958661725_9zhhz",
-      "name": "VK",
-      "role": "Batsman",
-      "basePrice": 2000000,
-      "photo": "",
-      "status": "sold",
-      "soldTo": "team_1781958656393_npx3o",
-      "soldPrice": 2000000
-    }
-  ],
+  "teams": [],
+  "players": [],
   "auction": {
-    "status": "sold",
-    "currentPlayer": "player_1781958661725_9zhhz",
-    "currentBid": 2000000,
-    "currentBidder": "team_1781958656393_npx3o",
-    "bidHistory": [
-      {
-        "teamId": "team_1781958656393_npx3o",
-        "teamName": "Royal Strikers",
-        "teamColor": "#F59E0B",
-        "amount": 2000000,
-        "timestamp": 1781958683376
-      }
-    ],
-    "timer": 0,
+    "status": "idle",
+    "currentPlayer": null,
+    "currentBid": 0,
+    "currentBidder": null,
+    "bidHistory": [],
+    "timer": 20,
     "increment": 500000,
-    "soldPlayers": [
-      "player_1781958661725_9zhhz"
-    ],
+    "soldPlayers": [],
     "unsoldPlayers": [],
-    "round": 1
+    "round": 1,
+    "priorityQueue": []
   },
   "settings": {
     "defaultPurse": 10000000,
     "timerDuration": 20,
     "defaultIncrement": 500000,
-    "defaultBasePrice": 2000000
+    "defaultBasePrice": 2000000,
+    "maxPlayersPerTeam": 8,
+    "rosterLocked": false
   }
 }

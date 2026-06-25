@@ -15,8 +15,27 @@ import {
 let timerInterval = null;
 
 export function pickNextPlayer() {
-  let players = getPlayers();
   let auction = getAuction();
+
+  // Check priority queue first (for undone players)
+  if (auction.priorityQueue && auction.priorityQueue.length > 0) {
+    const priorityId = auction.priorityQueue[0];
+    const priorityPlayer = getPlayerById(priorityId);
+    if (priorityPlayer && priorityPlayer.status === "available") {
+      // Remove from priority queue
+      updateAuction({
+        priorityQueue: auction.priorityQueue.slice(1),
+      });
+      return priorityPlayer;
+    }
+    // If player is no longer available, remove from queue and continue
+    updateAuction({
+      priorityQueue: auction.priorityQueue.slice(1),
+    });
+    auction = getAuction();
+  }
+
+  let players = getPlayers();
   let available = players.filter(
     (p) =>
       p.status === "available" &&
@@ -91,6 +110,13 @@ export function placeBid(teamId, io, customBidAmount) {
   const team = getTeamById(teamId);
   if (!team) return { error: "Team not found" };
 
+  // Check slot limit before allowing bid
+  const maxPlayers = settings.maxPlayersPerTeam;
+  const totalPlayers = (team.captain ? 1 : 0) + (team.players?.length || 0) + (team.preAddedPlayers?.length || 0);
+  if (totalPlayers >= maxPlayers) {
+    return { error: `Team roster is full (${maxPlayers}/${maxPlayers})` };
+  }
+
   let bidAmount = auction.currentBidder
     ? auction.currentBid + auction.increment
     : auction.currentBid;
@@ -133,6 +159,7 @@ export function placeBid(teamId, io, customBidAmount) {
 
 export function markSold(io) {
   const auction = getAuction();
+  const settings = getSettings();
 
   if (!auction.currentPlayer) {
     return { error: "No player currently being auctioned" };
@@ -149,6 +176,13 @@ export function markSold(io) {
 
   if (!player || !team) {
     return { error: "Player or team not found" };
+  }
+
+  // Check slot limit before finalizing sale
+  const maxPlayers = settings.maxPlayersPerTeam;
+  const totalPlayers = (team.captain ? 1 : 0) + (team.players?.length || 0) + (team.preAddedPlayers?.length || 0);
+  if (totalPlayers >= maxPlayers) {
+    return { error: `Team roster is full (${maxPlayers}/${maxPlayers}). Cannot add more players.` };
   }
 
   // Update player
@@ -205,6 +239,57 @@ export function markUnsold(io) {
   });
 
   return { player };
+}
+
+export function undoLastSold() {
+  const auction = getAuction();
+  const soldPlayers = auction.soldPlayers || [];
+
+  if (soldPlayers.length === 0) {
+    return { error: "No sold players to undo" };
+  }
+
+  // Get the last sold player
+  const lastSoldId = soldPlayers[soldPlayers.length - 1];
+  const player = getPlayerById(lastSoldId);
+  if (!player) return { error: "Player not found" };
+
+  const team = getTeamById(player.soldTo);
+  if (!team) return { error: "Team not found" };
+
+  const soldPrice = player.soldPrice || 0;
+
+  // Restore player to available
+  updatePlayer(lastSoldId, {
+    status: "available",
+    soldTo: null,
+    soldPrice: null,
+  });
+
+  // Restore team purse and remove player from team roster
+  updateTeam(team.id, {
+    remaining: team.remaining + soldPrice,
+    players: (team.players || []).filter((p) => p.id !== lastSoldId),
+  });
+
+  // Remove from soldPlayers list and push to priority queue
+  const newSoldPlayers = soldPlayers.slice(0, -1);
+  const priorityQueue = auction.priorityQueue || [];
+
+  updateAuction({
+    soldPlayers: newSoldPlayers,
+    priorityQueue: [...priorityQueue, lastSoldId],
+  });
+
+  console.log(
+    `[Auction] Undo sold: ${player.name} returned from ${team.name}, ₹${soldPrice} restored`,
+  );
+
+  return {
+    player: { ...player, status: "available", soldTo: null, soldPrice: null },
+    team: { ...team, remaining: team.remaining + soldPrice },
+    restoredAmount: soldPrice,
+  };
 }
 
 export function pauseAuction() {

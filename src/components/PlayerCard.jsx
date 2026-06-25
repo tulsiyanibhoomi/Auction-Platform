@@ -1,16 +1,36 @@
-import { getInitials, getRoleBadgeColor, formatCurrency } from '../utils/formatters';
-import './PlayerCard.css';
+import {
+  getInitials,
+  getRoleBadgeColor,
+  formatCurrency,
+} from "../utils/formatters";
+import "./PlayerCard.css";
 
-export default function PlayerCard({ player, size = 'md', showPrice = true, animate = false }) {
+export default function PlayerCard({
+  player,
+  size = "md",
+  showPrice = true,
+  animate = false,
+}) {
   if (!player) return null;
 
   return (
-    <div className={`player-card player-card--${size} ${animate ? 'player-card--animate' : ''}`}>
-      <div className="player-card__avatar" style={{ borderColor: getRoleBadgeColor(player.role) }}>
+    <div
+      className={`player-card player-card--${size} ${animate ? "player-card--animate" : ""}`}
+    >
+      <div
+        className="player-card__avatar"
+        style={{ borderColor: getRoleBadgeColor(player.role) }}
+      >
         {player.photo ? (
-          <img src={player.photo} alt={player.name} className="player-card__photo" />
+          <img
+            src={player.photo}
+            alt={player.name}
+            className="player-card__photo"
+          />
         ) : (
-          <span className="player-card__initials">{getInitials(player.name)}</span>
+          <span className="player-card__initials">
+            {getInitials(player.name)}
+          </span>
         )}
       </div>
       <div className="player-card__info">
@@ -27,14 +47,16 @@ export default function PlayerCard({ player, size = 'md', showPrice = true, anim
         {showPrice && (
           <div className="player-card__price">
             <span className="player-card__price-label">Base Price</span>
-            <span className="player-card__price-value">{formatCurrency(player.basePrice)}</span>
+            <span className="player-card__price-value">
+              {formatCurrency(player.basePrice)}
+            </span>
           </div>
         )}
       </div>
-      {player.status === 'sold' && (
+      {player.status === "sold" && (
         <div className="player-card__sold-badge">SOLD</div>
       )}
-      {player.status === 'unsold' && (
+      {player.status === "unsold" && (
         <div className="player-card__unsold-badge">UNSOLD</div>
       )}
     </div>

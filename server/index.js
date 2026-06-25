@@ -21,6 +21,12 @@ import {
   resetState,
   removeAllTeams,
   removeAllPlayers,
+  getTeamById,
+  setCaptain,
+  regenerateCaptainPassword,
+  addPrePlayer,
+  removePrePlayer,
+  updateTeamPurse,
 } from "./stateManager.js";
 import {
   startPlayerAuction,
@@ -33,6 +39,7 @@ import {
   getRemainingPlayers,
   stopTimer,
   endAuction,
+  undoLastSold,
 } from "./auctionEngine.js";
 
 const app = express();
@@ -68,6 +75,37 @@ app.post("/api/verify-admin", (req, res) => {
     res.json({ success: true });
   } else {
     res.status(401).json({ success: false, message: "Incorrect password" });
+  }
+});
+
+// Captain password verification endpoint
+app.post("/api/verify-captain", (req, res) => {
+  const { teamId, password } = req.body;
+  if (!teamId || !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Team ID and password are required" });
+  }
+
+  const team = getTeamById(teamId);
+  if (!team) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Team not found" });
+  }
+
+  if (!team.captain) {
+    return res
+      .status(400)
+      .json({ success: false, message: "No captain assigned to this team" });
+  }
+
+  if (team.captain.password === password) {
+    res.json({ success: true, teamName: team.name });
+  } else {
+    res
+      .status(401)
+      .json({ success: false, message: "Incorrect captain password" });
   }
 });
 
@@ -122,6 +160,8 @@ io.on("connection", (socket) => {
       purse: purse || settings.defaultPurse,
       remaining: purse || settings.defaultPurse,
       players: [],
+      captain: null,
+      preAddedPlayers: [],
     };
 
     addTeam(team);
@@ -130,8 +170,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("admin:removeTeam", ({ teamId }) => {
+    // Before removing team, reset any pre-added players back to available
+    const team = getTeamById(teamId);
+    if (team && team.preAddedPlayers) {
+      team.preAddedPlayers.forEach((p) => {
+        const player = getPlayers().find((pl) => pl.id === p.id);
+        if (player && player.status === "pre-added") {
+          player.status = "available";
+          player.soldTo = null;
+        }
+      });
+    }
     removeTeam(teamId);
     io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
     console.log(`[Admin] Team removed: ${teamId}`);
   });
 
@@ -167,7 +219,95 @@ io.on("connection", (socket) => {
   socket.on("admin:removePlayer", ({ playerId }) => {
     removePlayer(playerId);
     io.emit("players:update", { players: getPlayers() });
+    io.emit("teams:update", { teams: getTeams() });
     console.log(`[Admin] Player removed: ${playerId}`);
+  });
+
+  // --- Admin: Captain Management ---
+  socket.on("admin:setCaptain", ({ teamId, captainName }) => {
+    if (!teamId || !captainName) {
+      socket.emit("error", {
+        message: "Team ID and captain name are required",
+      });
+      return;
+    }
+    const result = setCaptain(teamId, captainName);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    console.log(`[Admin] Captain assigned: ${captainName} to team ${teamId}`);
+  });
+
+  socket.on("admin:regenerateCaptainPassword", ({ teamId }) => {
+    const result = regenerateCaptainPassword(teamId);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    console.log(`[Admin] Captain password regenerated for team ${teamId}`);
+  });
+
+  // --- Admin: Pre-Auction Player Management ---
+  socket.on("admin:addPrePlayer", ({ teamId, playerId }) => {
+    const result = addPrePlayer(teamId, playerId);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
+    console.log(`[Admin] Pre-added player ${playerId} to team ${teamId}`);
+  });
+
+  socket.on("admin:removePrePlayer", ({ teamId, playerId }) => {
+    const result = removePrePlayer(teamId, playerId);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
+    console.log(`[Admin] Removed pre-added player ${playerId} from team ${teamId}`);
+  });
+
+  // --- Admin: Purse Adjustment ---
+  socket.on("admin:adjustPurse", ({ teamId, newRemaining }) => {
+    const result = updateTeamPurse(teamId, newRemaining);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    console.log(`[Admin] Purse adjusted for team ${teamId}: ₹${newRemaining}`);
+  });
+
+  // --- Admin: Roster Lock ---
+  socket.on("admin:lockRoster", () => {
+    updateSettings({ rosterLocked: true });
+    io.emit("settings:update", { settings: getSettings() });
+    console.log("[Admin] Roster locked");
+  });
+
+  socket.on("admin:unlockRoster", () => {
+    updateSettings({ rosterLocked: false });
+    io.emit("settings:update", { settings: getSettings() });
+    console.log("[Admin] Roster unlocked");
+  });
+
+  // --- Admin: Undo Last Sold ---
+  socket.on("admin:undoLastSold", () => {
+    const result = undoLastSold();
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
+    io.emit("auction:update", { auction: getAuction() });
+    console.log(`[Admin] Undo last sold: ${result.player.name}`);
   });
 
   // --- Admin: Auction Controls ---
@@ -273,6 +413,7 @@ io.on("connection", (socket) => {
   socket.on("admin:removeAllPlayers", () => {
     removeAllPlayers();
     io.emit("players:update", { players: getPlayers() });
+    io.emit("teams:update", { teams: getTeams() });
     console.log("[Admin] All players removed");
   });
 
@@ -310,6 +451,39 @@ io.on("connection", (socket) => {
     console.log(
       `[Bid] ${result.bidEntry.teamName} bid ₹${result.bidEntry.amount}`,
     );
+  });
+
+  // --- Captain: Pre-Auction Player Management ---
+  socket.on("captain:addPrePlayer", ({ teamId, playerId }) => {
+    const settings = getSettings();
+    if (settings.rosterLocked) {
+      socket.emit("error", { message: "Roster is locked by admin" });
+      return;
+    }
+    const result = addPrePlayer(teamId, playerId);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
+    console.log(`[Captain] Pre-added player ${playerId} to team ${teamId}`);
+  });
+
+  socket.on("captain:removePrePlayer", ({ teamId, playerId }) => {
+    const settings = getSettings();
+    if (settings.rosterLocked) {
+      socket.emit("error", { message: "Roster is locked by admin" });
+      return;
+    }
+    const result = removePrePlayer(teamId, playerId);
+    if (result.error) {
+      socket.emit("error", { message: result.error });
+      return;
+    }
+    io.emit("teams:update", { teams: getTeams() });
+    io.emit("players:update", { players: getPlayers() });
+    console.log(`[Captain] Removed pre-added player ${playerId} from team ${teamId}`);
   });
 
   // --- Stats ---

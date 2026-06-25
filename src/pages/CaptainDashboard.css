@@ -72,6 +72,43 @@
   color: var(--accent-gold-light);
 }
 
+/* ===== Purse Info Bar ===== */
+.captain__purse-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--bg-secondary);
+  border-bottom: var(--border-card);
+}
+
+.captain__purse-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  background: var(--bg-primary);
+}
+
+.captain__purse-item-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.captain__purse-item-value {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.captain__slots-full {
+  color: var(--accent-red) !important;
+}
+
 /* Main */
 .captain__main {
   flex: 1;
@@ -80,16 +117,22 @@
   flex-direction: column;
 }
 
+/* Idle View */
+.captain__idle-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
 /* Waiting state */
 .captain__waiting {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   gap: var(--space-md);
-  padding: var(--space-2xl);
+  padding: var(--space-xl);
 }
 
 .captain__waiting-icon {
@@ -113,6 +156,81 @@
   border: 3px solid var(--accent-gold);
   animation: pulse 2s ease infinite;
   opacity: 0.3;
+}
+
+/* ===== Pre-Auction Roster ===== */
+.captain__pre-roster {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-md);
+}
+
+.captain__pre-roster-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+.captain__pre-roster-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.captain__pre-roster-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.captain__pre-roster-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.captain__pre-roster-add {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.captain__pre-roster-add select {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+
+.captain__pre-roster-full {
+  color: var(--accent-red-light);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: var(--space-sm);
+}
+
+.captain__pre-roster-locked-msg {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: var(--space-sm);
+}
+
+.captain__pre-roster-slots {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: var(--border-card);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 /* Auction View */
@@ -208,7 +326,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 150px;
+  max-height: 200px;
   overflow-y: auto;
 }
 

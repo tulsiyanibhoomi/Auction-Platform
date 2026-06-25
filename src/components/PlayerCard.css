@@ -1,4 +1,6 @@
 .player-card {
+  --top-accent-height: 3px;
+  padding-top: calc(var(--space-lg) + var(--top-accent-height) + 8px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,14 +15,13 @@
 }
 
 .player-card::before {
-  content: '';
+  content: "";
+  opacity: 0.6;
+  height: 3px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--gradient-gold);
-  opacity: 0.6;
 }
 
 .player-card--animate {
@@ -45,7 +46,9 @@
   font-size: 0.85rem;
 }
 
-.player-card--sm .player-card__price { display: none; }
+.player-card--sm .player-card__price {
+  display: none;
+}
 
 .player-card--md .player-card__avatar {
   width: 80px;

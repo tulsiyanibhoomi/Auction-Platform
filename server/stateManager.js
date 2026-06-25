@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { randomBytes } from "crypto";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = join(__dirname, "state.json");
@@ -19,12 +20,15 @@ const DEFAULT_STATE = {
     soldPlayers: [],
     unsoldPlayers: [],
     round: 1,
+    priorityQueue: [],
   },
   settings: {
     defaultPurse: 10000000,
     timerDuration: 20,
     defaultIncrement: 500000,
     defaultBasePrice: 2000000,
+    maxPlayersPerTeam: 11,
+    rosterLocked: false,
   },
 };
 
@@ -43,6 +47,12 @@ export function loadState() {
         auction: { ...DEFAULT_STATE.auction, ...state.auction },
         settings: { ...DEFAULT_STATE.settings, ...state.settings },
       };
+      // Ensure teams have new fields
+      state.teams = state.teams.map((t) => ({
+        captain: null,
+        preAddedPlayers: [],
+        ...t,
+      }));
       console.log("[StateManager] Loaded state from state.json");
     } else {
       state = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -114,6 +124,9 @@ export function updateSettings(updates) {
 }
 
 export function addTeam(team) {
+  // Ensure new team has captain and preAddedPlayers fields
+  if (!team.captain) team.captain = null;
+  if (!team.preAddedPlayers) team.preAddedPlayers = [];
   state.teams.push(team);
   saveState();
   return state.teams;
@@ -142,6 +155,12 @@ export function addPlayer(player) {
 
 export function removePlayer(playerId) {
   state.players = state.players.filter((p) => p.id !== playerId);
+  // Also remove from any team's preAddedPlayers
+  state.teams.forEach((t) => {
+    if (t.preAddedPlayers) {
+      t.preAddedPlayers = t.preAddedPlayers.filter((p) => p.id !== playerId);
+    }
+  });
   saveState();
   return state.players;
 }
@@ -161,14 +180,22 @@ export function resetState() {
     ...t,
     remaining: t.purse || state.settings.defaultPurse,
     players: [],
+    // Preserve captain and preAddedPlayers on reset
+    captain: t.captain || null,
+    preAddedPlayers: t.preAddedPlayers || [],
   }));
 
-  state.players = state.players.map((p) => ({
-    ...p,
-    status: "available",
-    soldTo: null,
-    soldPrice: null,
-  }));
+  state.players = state.players.map((p) => {
+    if (p.status === "pre-added") {
+      return p;
+    }
+    return {
+      ...p,
+      status: "available",
+      soldTo: null,
+      soldPrice: null,
+    };
+  });
 
   // Reset auction state to default
   state.auction = JSON.parse(JSON.stringify(DEFAULT_STATE.auction));
@@ -187,6 +214,10 @@ export function removeAllTeams() {
 
 export function removeAllPlayers() {
   state.players = [];
+  // Also clear preAddedPlayers from all teams
+  state.teams.forEach((t) => {
+    t.preAddedPlayers = [];
+  });
   saveStateImmediate();
   console.log("[StateManager] All players removed");
   return state.players;
@@ -198,4 +229,106 @@ export function getTeamById(teamId) {
 
 export function getPlayerById(playerId) {
   return state.players.find((p) => p.id === playerId) || null;
+}
+
+// ===== Captain Management =====
+
+function generatePassword() {
+  return randomBytes(4).toString("hex"); // 8-char hex string
+}
+
+export function setCaptain(teamId, captainName) {
+  const team = getTeamById(teamId);
+  if (!team) return { error: "Team not found" };
+
+  const password = generatePassword();
+  team.captain = { name: captainName, password };
+  saveState();
+  console.log(`[StateManager] Captain set for ${team.name}: ${captainName}`);
+  return { captain: team.captain };
+}
+
+export function regenerateCaptainPassword(teamId) {
+  const team = getTeamById(teamId);
+  if (!team) return { error: "Team not found" };
+  if (!team.captain) return { error: "No captain assigned" };
+
+  team.captain.password = generatePassword();
+  saveState();
+  console.log(`[StateManager] Password regenerated for captain of ${team.name}`);
+  return { captain: team.captain };
+}
+
+// ===== Pre-Auction Player Management =====
+
+export function addPrePlayer(teamId, playerId) {
+  const team = getTeamById(teamId);
+  if (!team) return { error: "Team not found" };
+
+  const player = getPlayerById(playerId);
+  if (!player) return { error: "Player not found" };
+
+  // Check if player is available
+  if (player.status !== "available") {
+    return { error: "Player is not available" };
+  }
+
+  // Check if player is already pre-added to any team
+  for (const t of state.teams) {
+    if (t.preAddedPlayers && t.preAddedPlayers.some((p) => p.id === playerId)) {
+      return { error: `Player already assigned to ${t.name}` };
+    }
+  }
+
+  // Check max players per team
+  const maxPlayers = state.settings.maxPlayersPerTeam;
+  const totalPlayers = (team.captain ? 1 : 0) + (team.players?.length || 0) + (team.preAddedPlayers?.length || 0);
+  if (totalPlayers >= maxPlayers) {
+    return { error: `Team has reached maximum size (${maxPlayers})` };
+  }
+
+  if (!team.preAddedPlayers) team.preAddedPlayers = [];
+  team.preAddedPlayers.push({
+    id: player.id,
+    name: player.name,
+    role: player.role,
+  });
+
+  // Mark player as pre-added
+  updatePlayer(playerId, { status: "pre-added", soldTo: teamId });
+
+  saveState();
+  console.log(`[StateManager] Pre-added ${player.name} to ${team.name}`);
+  return { team, player };
+}
+
+export function removePrePlayer(teamId, playerId) {
+  const team = getTeamById(teamId);
+  if (!team) return { error: "Team not found" };
+
+  if (!team.preAddedPlayers) return { error: "No pre-added players" };
+
+  const idx = team.preAddedPlayers.findIndex((p) => p.id === playerId);
+  if (idx === -1) return { error: "Player not found in pre-added list" };
+
+  team.preAddedPlayers.splice(idx, 1);
+
+  // Reset player status back to available
+  updatePlayer(playerId, { status: "available", soldTo: null });
+
+  saveState();
+  console.log(`[StateManager] Removed pre-added player ${playerId} from ${team.name}`);
+  return { team };
+}
+
+// ===== Purse Adjustment =====
+
+export function updateTeamPurse(teamId, newRemaining) {
+  const team = getTeamById(teamId);
+  if (!team) return { error: "Team not found" };
+
+  team.remaining = Number(newRemaining);
+  saveState();
+  console.log(`[StateManager] Purse adjusted for ${team.name}: ₹${newRemaining}`);
+  return { team };
 }
